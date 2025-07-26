@@ -4,7 +4,14 @@
     List<Doctor> doctors = docDao.getAllDoctors();
     User user = (User) session.getAttribute("user");
     boolean isLoggedIn = (user != null && "patient".equals(user.getRole()));
+    
 %>
+<%@ page import="dao.DepartmentDAO, model.Department" %>
+<%
+    DepartmentDAO deptDao = new DepartmentDAO();
+    List<Department> departments = deptDao.getAllDepartments();
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -684,45 +691,30 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="section services-section" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Healthcare Services</h2>
-                <p>Comprehensive healthcare solutions designed for modern patient needs</p>
-            </div>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <h3>Patient Registration</h3>
-                    <p>Quick and secure patient registration with advanced data protection and easy account management</p>
-                    <a href="view/register.jsp" class="btn btn-primary">Register Now</a>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h3>Smart Appointment Booking</h3>
-                    <p>Intelligent scheduling system with real-time availability and automated reminders</p>
-                    <a href="<%= isLoggedIn ? "patientDashboard.jsp" : "view/login.jsp" %>" class="btn btn-primary">Book Now</a>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <h3>Health Records Management</h3>
-                    <p>Secure access to your complete medical history and health records with 24/7 availability</p>
-                    <a href="<%= isLoggedIn ? "patientDashboard.jsp" : "view/login.jsp" %>" class="btn btn-primary">View Records</a>
-                </div>
-            </div>
+<!-- Departments Section -->
+<section class="section services-section" id="services">
+    <div class="container">
+        <div class="section-header">
+            <h2>Available Departments</h2>
+            <p>Browse the list of departments currently available in our healthcare facility</p>
         </div>
-    </section>
 
+        <div class="cards-grid">
+            <% for (Department dept : departments) { %>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-hospital-symbol"></i>
+                    </div>
+                    <h3><%= dept.getName() %></h3>
+                    <p>Quality care and professional medical services in <%= dept.getName() %> department.</p>
+                    <a href="#doctors" class="btn btn-primary">View Doctors</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+   
     <!-- About Section -->
     <section class="section" id="about">
         <div class="container">
