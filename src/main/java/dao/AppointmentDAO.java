@@ -89,6 +89,8 @@ public class AppointmentDAO {
                 app.setDoctorName(rs.getString("doctorName"));
                 app.setDepartment(rs.getString("department"));
                 app.setStatus(rs.getString("status"));
+                app.setEndTime(rs.getTime("end_time"));
+
                 list.add(app);
             }
         } catch (Exception e) {
@@ -114,13 +116,14 @@ public class AppointmentDAO {
     public List<Appointment> getAppointmentsByDoctorId(int doctorId) {
         List<Appointment> list = new ArrayList<>();
         try {
-            String query = "SELECT a.id, a.patient_id, a.doctor_id, a.appointment_date, a.appointment_time, " +
-                           "u.name AS patientName, d.name AS doctorName, dept.name AS department, a.status " +
-                           "FROM appointments a " +
-                           "JOIN users u ON a.patient_id = u.id " +
-                           "JOIN doctors d ON a.doctor_id = d.id " +
-                           "JOIN departments dept ON d.department_id = dept.id " +
-                           "WHERE a.doctor_id = ?";
+            String query = "SELECT a.id, a.patient_id, a.doctor_id, a.appointment_date, a.appointment_time, a.end_time, " +
+                    "u.name AS patientName, d.name AS doctorName, dept.name AS department, a.status " +
+                    "FROM appointments a " +
+                    "JOIN users u ON a.patient_id = u.id " +
+                    "JOIN doctors d ON a.doctor_id = d.id " +
+                    "JOIN departments dept ON d.department_id = dept.id " +
+                    "WHERE a.doctor_id = ?";
+
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, doctorId);
             ResultSet rs = ps.executeQuery();
@@ -136,6 +139,8 @@ public class AppointmentDAO {
                 app.setDoctorName(rs.getString("doctorName"));
                 app.setDepartment(rs.getString("department"));
                 app.setStatus(rs.getString("status"));
+                app.setEndTime(rs.getTime("end_time"));
+
                 list.add(app);
             }
         } catch (Exception e) {
@@ -180,13 +185,14 @@ public class AppointmentDAO {
     public List<Appointment> getAppointmentsByPatientId(int patientId) {
         List<Appointment> list = new ArrayList<>();
         try {
-            String query = "SELECT a.id, a.patient_id, a.doctor_id, a.appointment_date, a.appointment_time, " +
-                    "u.name AS patientName, d.name AS doctorName, dept.name AS department, a.status " +
-                    "FROM appointments a " +
-                    "JOIN users u ON a.patient_id = u.id " +
-                    "JOIN doctors d ON a.doctor_id = d.id " +
-                    "JOIN departments dept ON d.department_id = dept.id " +
-                    "WHERE a.patient_id = ?";
+        	String query = "SELECT a.id, a.patient_id, a.doctor_id, a.appointment_date, a.appointment_time, a.end_time, " +
+        		    "u.name AS patientName, d.name AS doctorName, dept.name AS department, a.status " +
+        		    "FROM appointments a " +
+        		    "JOIN users u ON a.patient_id = u.id " +
+        		    "JOIN doctors d ON a.doctor_id = d.id " +
+        		    "JOIN departments dept ON d.department_id = dept.id " +
+        		    "WHERE a.patient_id = ?";
+
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, patientId);
@@ -203,6 +209,8 @@ public class AppointmentDAO {
                 app.setDoctorName(rs.getString("doctorName"));
                 app.setDepartment(rs.getString("department"));
                 app.setStatus(rs.getString("status"));
+                app.setEndTime(rs.getTime("end_time"));
+
                 list.add(app);
             }
         } catch (Exception e) {
@@ -252,6 +260,7 @@ public class AppointmentDAO {
                 appt.setEndTime(rs.getTime("end_time")); // Include if you added end_time
                 appt.setStatus(rs.getString("status"));
                 appt.setPatientName(rs.getString("patient_name"));
+                
                 list.add(appt);
             }
 

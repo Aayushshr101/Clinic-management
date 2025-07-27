@@ -428,51 +428,186 @@
             text-align: center;
         }
 
-        /* Contact Section */
-        .contact-section {
-            background: #f8f9fa;
-        }
+        /* Contact Section Styles */
+.contact-section {
+    background: #ffffff; /* Ensure white background as per screenshot */
+    padding: 80px 0;
+}
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
+.contact-layout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 80px; /* Space between columns */
+    padding: 40px 0; /* Padding inside the container */
+}
 
-        .contact-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ced4da;
-            transition: all 0.3s ease;
-        }
+@media (max-width: 992px) { /* Adjust breakpoint for stacking columns */
+    .contact-layout-wrapper {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+        gap: 50px;
+    }
+}
 
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
+/* Left Column: Contact Information */
+.contact-info-col h3,
+.contact-form-col h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem; /* Larger heading for both columns */
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 30px; /* Space below heading */
+}
 
-        .contact-card i {
-            font-size: 2.5rem;
-            color: #4a90e2;
-            margin-bottom: 20px;
-        }
+.info-block {
+    margin-bottom: 25px; /* Space between info blocks */
+    padding-left: 20px; /* Space for the blue line */
+    position: relative;
+}
 
-        .contact-card h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #212529;
-            margin-bottom: 12px;
-        }
+.info-block::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px; /* Blue vertical line */
+    background-color: #4a90e2; /* Blue color */
+    border-radius: 2px;
+}
 
-        .contact-card p {
-            font-size: 1rem;
-            color: #6c757d;
-        }
+.info-block .info-label {
+    font-weight: 600; /* Bold label */
+    color: #212529; /* Darker color for label */
+    margin-bottom: 5px; /* Space between label and content */
+    font-size: 1rem;
+}
+
+.info-block p {
+    font-size: 0.95rem; /* Smaller font for content */
+    color: #495057; /* Gray color for content */
+    line-height: 1.5;
+}
+
+/* Right Column: Contact Form */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between form fields */
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #495057;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-appearance: none; /* Remove default styles for select */
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff; /* Ensure white background for inputs */
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4a90e2; /* Blue border on focus */
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); /* Light blue shadow on focus */
+}
+
+/* Specific styles for the select dropdown */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper .form-input {
+    padding-right: 40px; /* Make space for the arrow */
+}
+
+.select-arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d; /* Gray arrow */
+    font-size: 0.8rem;
+    pointer-events: none; /* Allow clicks to pass through to select */
+}
+
+/* Specific styles for the date input with calendar icon */
+.date-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.date-input {
+    padding-right: 40px; /* Make space for the icon */
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d; /* Gray icon */
+    font-size: 1rem;
+    pointer-events: none; /* Allow clicks to pass through to input */
+}
+
+.appointment-btn {
+    width: fit-content; /* Button width fits content */
+    padding: 12px 30px; /* Adjust padding for button */
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background: #4a90e2; /* Blue background */
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.appointment-btn:hover {
+    background: #3a7bd5; /* Slightly darker blue on hover */
+    transform: translateY(-2px);
+}
+
+.appointment-btn .fas.fa-chevron-right {
+    font-size: 0.7rem; /* Smaller chevron icons */
+}
+
+/* General responsive adjustments for text within columns */
+@media (max-width: 480px) {
+    .contact-info-col h3,
+    .contact-form-col h3 {
+        font-size: 1.5rem;
+        text-align: center; /* Center headings on very small screens */
+    }
+    .info-block {
+        padding-left: 15px; /* Reduce padding for blue line */
+    }
+    .info-block::before {
+        width: 3px; /* Thinner blue line */
+    }
+    .info-block .info-label,
+    .info-block p {
+        font-size: 0.9rem;
+    }
+    .form-input {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+    .appointment-btn {
+        width: 100%; /* Full width button on small screens */
+        justify-content: center;
+        padding: 12px 20px;
+    }
+}
 
         /* Footer */
         footer {
@@ -605,7 +740,7 @@
                 <a href="#home" class="logo">
                     <i class="fas fa-heartbeat"></i>
                     <div class="logo-text">
-                        <h1>Health Care</h1>
+                        <h1>MediHub</h1>
                         <span>Your health, our priority</span>
                     </div>
                 </a>
@@ -719,14 +854,14 @@
     <section class="section" id="about">
         <div class="container">
             <div class="section-header">
-                <h2>About MediTrackPro</h2>
+                <h2>About MediHub</h2>
                 <p>Leading healthcare innovation with technology and compassionate care</p>
             </div>
             
             <div class="about-content">
                 <div class="about-text">
                     <h3>Our Mission</h3>
-                    <p>MediTrackPro is revolutionizing healthcare delivery through cutting-edge technology and patient-centered care. We believe exceptional healthcare should be accessible, efficient, and personalized.</p>
+                    <p>MediHub is revolutionizing healthcare delivery through cutting-edge technology and patient-centered care. We believe exceptional healthcare should be accessible, efficient, and personalized.</p>
                     
                     <h3>Why Choose Us?</h3>
                     <ul class="features-list">
@@ -757,45 +892,52 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="section contact-section" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2>Contact Us</h2>
-                <p>Get in touch with our healthcare team for appointments and support</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h4>Our Location</h4>
+<section class="section contact-section" id="contact">
+    <div class="container">
+        <!-- The main container for the two-column layout -->
+        <div class="contact-layout-wrapper">
+            <!-- Left Column: Contact Information -->
+            <div class="contact-info-col">
+                <h3>Contact Information</h3>
+                <div class="info-block">
+                    <p class="info-label">Office Address:</p>
                     <p>Kathmandu, Nepal</p>
+                    
+                </div>
+                <div class="info-block">
+                    <p class="info-label">Phone Number:</p>
+                    <p>+977 01919-264687</p>
+                    
+                </div>
+                <div class="info-block">
+                    <p class="info-label">Email Address:</p>
+                    <p>support@medihub.com</p>
                 </div>
                 
-                <div class="contact-card">
-                    <i class="fas fa-phone"></i>
-                    <h4>Call Us</h4>
-                    <p>=+977<br>Emergency: 97675459088</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-envelope"></i>
-                    <h4>Email Support</h4>
-                    <p>info@meditrackpro.com<br>support@meditrackpro.com</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-clock"></i>
-                    <h4>Working Hours</h4>
-                    <p>Mon-Fri: 8:00 AM - 6:00 PM<br>Sat-Sun: 9:00 AM - 4:00 PM</p>
-                </div>
+            </div>
+
+            <!-- Right Column: Contact Form -->
+            <div class="contact-form-col">
+                <h3>We Love To Hear From You</h3>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" class="form-input">
+                    <input type="text" placeholder="Email" class="form-input">
+                    
+                    <input type="text" placeholder="Phone Number" class="form-input">
+                    <input type="text" placeholder="write a message..." class="form-input">
+                    <button type="submit" class="btn btn-primary appointment-btn">
+                        Send us message <i class="fas fa-chevron-right"></i><i class="fas fa-chevron-right"></i>
+                    </button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 MediTrackPro. All rights reserved. | Modern Healthcare Management System</p>
+            <p>&copy; 2025 MediHub. All rights reserved.</p>
         </div>
     </footer>
 

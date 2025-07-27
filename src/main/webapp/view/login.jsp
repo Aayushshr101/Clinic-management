@@ -344,7 +344,7 @@
             <div class="login-form-background-pattern"></div>
             <div class="login-form-content">
                 
-                <h2>Login to Heath Care</h2>
+                <h2>Login to MediHub</h2>
                 <%
                     String msg = (String) session.getAttribute("msg");
                     if (msg != null) {

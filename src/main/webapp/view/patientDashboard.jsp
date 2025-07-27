@@ -1,12 +1,9 @@
 <%@ page session="true" import="java.util.*, model.User, dao.DoctorDAO, model.Doctor" %>
 <%!
-    // Java helper method for robust JavaScript string escaping
-    // This method is defined once and can be called from scriptlets.
     private String escapeJsString(String str) {
         if (str == null) {
-            return ""; // Return empty string for null
+            return "";
         }
-        // Use a StringBuilder for efficient string manipulation
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
@@ -17,12 +14,9 @@
                 case '\n': sb.append("\\n");  break;
                 case '\r': sb.append("\\r");  break;
                 case '\t': sb.append("\\t");  break;
-                // Handle Unicode line/paragraph separators if necessary, though less common
                 case '\u2028': sb.append("\\u2028"); break;
                 case '\u2029': sb.append("\\u2029"); break;
                 default:
-                    // For other special characters, you might need more specific handling
-                    // For basic names, this should be sufficient.
                     sb.append(c);
             }
         }
@@ -50,6 +44,8 @@
         /* Global box-sizing reset */
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         :root {
@@ -73,129 +69,303 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--background-light);
+            background: linear-gradient(135deg, #4a90e2 0%, #6a5acd 100%);
+            min-height: 100vh;
             padding: 20px;
             color: var(--text-dark);
             line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align to top */
-            min-height: 100vh;
         }
 
-        .container {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 600px; /* Adjusted max-width for the form */
+        /* Wide Dashboard Container */
+        .dashboard-container {
+            max-width: 1400px; /* Increased from 600px to 1400px */
             width: 100%;
-            box-shadow: 0 8px 20px var(--container-shadow);
-            margin-top: 40px;
+            margin: 0 auto;
         }
 
-        h2 {
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
+        /* Header Section */
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-section h1 {
+            font-size: 2rem;
             font-weight: 700;
-            text-align: center;
-        }
-
-        h3 {
             color: var(--text-dark);
-            margin-top: 30px;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-align: center;
+            margin-bottom: 8px;
         }
 
-        .welcome-text {
-            color: var(--text-medium);
-            font-size: 1rem;
-            text-align: center;
+        .welcome-section p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Step Navigation */
+        .step-navigation {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
 
-        label {
-            display: block;
-            font-weight: 600;
-            color: var(--text-medium);
-            margin-bottom: 8px;
-            margin-top: 20px;
-            font-size: 0.95rem;
-        }
-
-        select,
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="password"] {
-            padding: 12px 15px;
-            width: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-color: #fff;
-        }
-
-        select {
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-6.4H18.2c-5%200-9.3%201.8-13.2%206.4-3.9%204.6-5.9%2010.1-5.9%2016.1s2%2011.5%205.9%2016.1l128%20128c3.9%203.9%208.4%205.9%2013.2%205.9s9.3-2%2013.2-5.9l128-128c3.9-4.6%205.9-10.1%205.9-16.1s-2-11.5-5.9-16.1z%22%2F%3E%3C%2Fsvg%3E');
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 12px;
-        }
-
-        select:focus,
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
-        }
-
-        .button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            margin-top: 25px;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
-            width: 100%;
-            display: flex; /* Use flex for icon alignment */
+        .steps {
+            display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .steps::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e3e5;
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e3e5;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
             text-align: center;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Main Content Container */
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            min-height: 500px; /* Ensure adequate height */
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Content Sections */
+        .section-container {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .section-container.show {
+            opacity: 1;
+            max-height: 2000px;
+            overflow: visible;
+            pointer-events: auto;
+        }
+
+        /* Department Grid - Wide Layout */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* For departments, use 4 columns on large screens */
+        #departmentSelection .card-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* For doctors, use 3 columns on large screens */
+        #doctorSelection .card-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            padding: 30px 25px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            display: block;
+            min-height: 1.5em;
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--text-medium);
+            display: block;
+        }
+
+        .card-doctor-dept {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            display: block;
+            min-height: 1em;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
             text-decoration: none;
-            gap: 8px; /* Space between icon and text */
+            font-family: inherit;
         }
 
-        .button:hover {
-            background-color: var(--primary-hover);
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 6px 18px rgba(74, 144, 226, 0.4);
         }
 
-        .button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(106, 90, 205, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(106, 90, 205, 0.4);
         }
 
         .back-button {
             background-color: var(--text-light);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             margin-top: 0;
         }
 
@@ -203,14 +373,91 @@
             background-color: #5a6268;
         }
 
+        /* Form Styling */
+        .booking-form {
+            max-width: 800px; /* Increased from 600px */
+            margin: 0 auto;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-medium);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        input[readonly][disabled] {
+            background-color: var(--background-light);
+            cursor: default;
+            font-weight: 600;
+            color: var(--primary-color);
+            opacity: 1;
+        }
+
+        #selectedDepartmentDisplay[readonly][disabled] {
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        #slotContainer {
+            background-color: var(--background-light);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        /* Message Box */
         .message {
             background-color: var(--success-bg);
             color: var(--success-text);
-            padding: 15px;
+            padding: 15px 20px;
             margin-bottom: 25px;
             border-radius: 8px;
             border: 1px solid #c3e6cb;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -221,21 +468,44 @@
             font-size: 1.2rem;
         }
 
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
         .link-btn {
             background-color: var(--secondary-color);
             color: white;
             text-align: center;
-            padding: 12px;
-            display: flex; /* Use flex for icon alignment */
+            padding: 14px 24px;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            margin-top: 20px;
+            font-size: 1rem;
             box-shadow: 0 4px 12px rgba(106, 90, 205, 0.2);
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            gap: 8px; /* Space between icon and text */
+            transition: all 0.3s ease;
+            gap: 8px;
         }
 
         .link-btn:hover {
@@ -244,18 +514,13 @@
             box-shadow: 0 6px 15px rgba(106, 90, 205, 0.3);
         }
 
-        .link-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(106, 90, 205, 0.2);
-        }
-
         .profile-link {
-            display: block;
-            text-align: center;
-            margin-top: 25px;
+            display: inline-block;
+            margin-top: 15px;
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
+            font-size: 1rem;
             transition: color 0.2s ease;
         }
 
@@ -264,143 +529,96 @@
             text-decoration: underline;
         }
 
-        #slotContainer {
-            background-color: var(--background-light);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            margin-top: 10px;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            text-align: center;
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                max-width: 100%;
+                padding: 0 15px;
+            }
+            
+            #departmentSelection .card-grid,
+            #doctorSelection .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
         }
 
-        /* Section visibility styles with transition */
-        .section-container {
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
-            pointer-events: none; /* Disable interaction when hidden */
-        }
-
-        .section-container.show {
-            opacity: 1;
-            max-height: 1000px; /* Sufficiently large value to show content */
-            overflow: visible;
-            pointer-events: auto; /* Enable interaction when shown */
-        }
-
-        /* Card styles for Department and Doctor selection */
-        .card-grid {
-            display: grid; /* Default display for card grids */
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
-            gap: 20px; /* Space between cards */
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px var(--card-shadow);
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 150px; /* Ensure consistent card height */
-        }
-
-        .card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.15);
-            transform: translateY(-3px);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            display: block; /* Ensure icon is displayed */
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 5px;
-            display: block; /* Ensure title is displayed */
-            min-height: 1.5em; /* Ensure it takes space even if content is empty */
-        }
-
-        .card-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-medium);
-            display: block; /* Ensure subtitle is displayed */
-        }
-
-        .card-doctor-dept {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 5px;
-            display: block; /* Ensure doctor department is displayed */
-            min-height: 1em; /* Ensure it takes space even if content is empty */
-        }
-
-        /* Specific styling for disabled inputs in form */
-        input[readonly][disabled] {
-            background-color: var(--background-light);
-            cursor: default;
-            font-weight: 600;
-            color: var(--primary-color);
-            opacity: 1; /* Ensure it's not faded */
-        }
-        #selectedDepartmentDisplay[readonly][disabled] {
-            font-weight: 500;
-            color: var(--text-medium);
-        }
-
-        /* Form specific spacing */
-        form > label:first-of-type {
-            margin-top: 0; /* Remove extra top margin for first label in form */
-        }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             body {
                 padding: 15px;
             }
-            .container {
-                margin-top: 20px;
+
+            .header,
+            .step-navigation,
+            .main-content,
+            .quick-actions {
                 padding: 20px;
             }
-            .button, .link-btn {
-                font-size: 1rem;
-                padding: 12px 15px;
+
+            .header {
+                flex-direction: column;
+                text-align: center;
             }
+
+            .steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .steps::before {
+                display: none;
+            }
+
             .card-grid {
-                grid-template-columns: 1fr; /* Stack cards on small screens */
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-form {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <a href="index.jsp" class="button back-button">
-        <i class="fas fa-arrow-left"></i> Back to Home
-    </a>
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="header">
+        <div class="welcome-section">
+            <h1>Welcome, <%= user.getName() %>!</h1>
+            <p>Manage your health appointments with ease</p>
+        </div>
+        <div class="header-actions">
+            <a href="index.jsp" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
 
-    <h2>MediTrackPro Dashboard</h2>
-    <p class="welcome-text">Welcome, <%= user.getName() %>! Manage your health appointments with ease.</p>
+    <!-- Step Navigation -->
+    <div class="step-navigation">
+        <div class="steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-label">Choose Department</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-label">Select Doctor</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-label">Book Appointment</div>
+            </div>
+        </div>
+    </div>
 
     <%-- Message display --%>
     <%
@@ -416,140 +634,158 @@
         }
     %>
 
-    <!-- Main Appointment Flow Container -->
-    <div id="appointmentFlowContainer" class="section-container show">
-        <h3 id="flowTitle">Step 1: Choose a Department</h3>
-        <p id="flowInstructions" class="welcome-text" style="margin-bottom: 30px;">
-            Click on a department card below to see the doctors available in that specialty.
-        </p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div id="appointmentFlowContainer" class="section-container show">
+            <h2 id="flowTitle" class="section-title">Choose a Department</h2>
+            <p id="flowInstructions" class="section-subtitle">
+                Click on a department card below to see the doctors available in that specialty.
+            </p>
 
-        <!-- Department Selection Section -->
-        <div id="departmentSelection" class="section-container show">
-            <div class="card-grid">
-                <%
-                    Set<String> departments = new TreeSet<>();
-                    for (Doctor d : doctors) {
-                        if (d.getDepartmentName() != null) {
-                            departments.add(d.getDepartmentName());
+            <!-- Department Selection Section -->
+            <div id="departmentSelection" class="section-container show">
+                <div class="card-grid">
+                    <%
+                        Set<String> departments = new TreeSet<>();
+                        for (Doctor d : doctors) {
+                            if (d.getDepartmentName() != null) {
+                                departments.add(d.getDepartmentName());
+                            }
                         }
+                        for (String dept : departments) {
+                    %>
+                        <div class="card" data-department="<%= escapeJsString(dept) %>">
+                            <i class="fas fa-hospital card-icon"></i>
+                            <div class="card-title"><%= dept %></div>
+                            <div class="card-subtitle">Click to view doctors</div>
+                        </div>
+                    <%
+                        }
+                    %>
+                </div>
+            </div>
+
+            <!-- Doctor Selection Section -->
+            <div id="doctorSelection" class="section-container">
+                <button id="backToDepartmentsBtn" class="btn back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Departments
+                </button>
+                <%
+                    Map<String, List<Doctor>> doctorsByDepartment = new HashMap<>();
+                    for (Doctor d : doctors) {
+                        doctorsByDepartment.computeIfAbsent(d.getDepartmentName(), k -> new ArrayList<>()).add(d);
                     }
-                    for (String dept : departments) {
+                    for (Map.Entry<String, List<Doctor>> entry : doctorsByDepartment.entrySet()) {
+                        String deptName = entry.getKey();
+                        List<Doctor> doctorsInDept = entry.getValue();
+                        String departmentGridId = "doctor-grid-" + escapeJsString(deptName).replaceAll("[^a-zA-Z0-9]", "");
                 %>
-                    <div class="card" data-department="<%= escapeJsString(dept) %>">
-                        <i class="fas fa-hospital card-icon"></i>
-                        <div class="card-title"><%= dept %></div>
-                        <div class="card-subtitle">Click to view doctors</div>
-                    </div>
+                        <div id="<%= departmentGridId %>" class="card-grid" style="display: none;" data-department-group="<%= escapeJsString(deptName) %>">
+                            <%
+                                for (Doctor d : doctorsInDept) {
+                            %>
+                                    <div class="card" data-doctor-id="<%= d.getId() %>" data-doctor-name="<%= escapeJsString(d.getName()) %>" data-department-name="<%= escapeJsString(d.getDepartmentName()) %>">
+                                        <i class="fas fa-user-md card-icon"></i>
+                                        <div class="card-title">
+                                            <%= d.getName() %>
+                                        </div>
+                                        <div class="card-doctor-dept">
+                                            <%= d.getDepartmentName() %>
+                                        </div>
+                                        <div class="card-subtitle">Click to book</div>
+                                    </div>
+                            <%
+                                }
+                            %>
+                        </div>
                 <%
                     }
                 %>
             </div>
-        </div>
 
-        <!-- Doctor Selection Section (initially hidden) -->
-        <div id="doctorSelection" class="section-container">
-            <button id="backToDepartmentsBtn" class="button back-button">
-                <i class="fas fa-arrow-left"></i> Back to Departments
-            </button>
-            <%
-                Map<String, List<Doctor>> doctorsByDepartment = new HashMap<>();
-                for (Doctor d : doctors) {
-                    doctorsByDepartment.computeIfAbsent(d.getDepartmentName(), k -> new ArrayList<>()).add(d);
-                }
-                for (Map.Entry<String, List<Doctor>> entry : doctorsByDepartment.entrySet()) {
-                    String deptName = entry.getKey();
-                    List<Doctor> doctorsInDept = entry.getValue();
-                    // The ID here is still cleaned, but JS will now use data-department-group for matching
-                    String departmentGridId = "doctor-grid-" + escapeJsString(deptName).replaceAll("[^a-zA-Z0-9]", "");
-            %>
-                    <div id="<%= departmentGridId %>" class="card-grid" style="display: none;" data-department-group="<%= escapeJsString(deptName) %>">
-                        <%
-                            for (Doctor d : doctorsInDept) {
-                        %>
-                                <div class="card" data-doctor-id="<%= d.getId() %>" data-doctor-name="<%= escapeJsString(d.getName()) %>" data-department-name="<%= escapeJsString(d.getDepartmentName()) %>">
-                                    <i class="fas fa-user-md card-icon"></i>
-                                    <div class="card-title">
-                                        <%= d.getName() %>
-                                    </div>
-                                    <div class="card-doctor-dept">
-                                        <%= d.getDepartmentName() %>
-                                    </div>
-                                    <div class="card-subtitle">Click to book</div>
-                                </div>
-                        <%
-                            }
-                        %>
-                    </div>
-            <%
-                }
-            %>
-        </div>
-
-        <!-- Appointment Form Section (initially hidden) -->
-        <div id="appointmentFormSection" class="section-container">
-            <button id="backToDoctorsBtn" class="button back-button">
-                <i class="fas fa-arrow-left"></i> Back to Doctors
-            </button>
-            <form action="<%= request.getContextPath() %>/bookAppointment" method="post" class="space-y-4">
-                <input type="hidden" name="doctorId" id="formDoctorId">
-                <input type="hidden" name="departmentName" id="formDepartmentName">
-
-                <div>
-                    <label for="selectedDoctorDisplay">You are booking with:</label>
-                    <input type="text" id="selectedDoctorDisplay" readonly disabled>
-                </div>
-
-                <div>
-                    <label for="selectedDepartmentDisplay">In Department:</label>
-                    <input type="text" id="selectedDepartmentDisplay" readonly disabled>
-                </div>
-
-                <div>
-                    <label for="slot">Select Available Time Slot</label>
-                    <div id="slotContainer">
-                        <p>Loading slots...</p>
-                    </div>
-                </div>
-
-                <div>
-                    <label for="fullName">Your Full Name</label>
-                    <input type="text" name="fullName" id="fullName" required>
-                </div>
-                <div>
-                    <label for="contact">Your Contact Number</label>
-                    <input type="text" name="contact" id="contact" required>
-                </div>
-                <div>
-                    <label for="age">Your Age</label>
-                    <input type="number" name="age" id="age" min="1" max="120" required>
-                </div>
-                <div>
-                    <label for="gender">Your Gender</label>
-                    <select name="gender" id="gender" required>
-                        <option value="">Select gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="button">
-                    <i class="fas fa-calendar-check"></i>
-                    Confirm & Book Appointment
+            <!-- Appointment Form Section -->
+            <div id="appointmentFormSection" class="section-container">
+                <button id="backToDoctorsBtn" class="btn back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Doctors
                 </button>
-            </form>
+                
+                <div class="booking-form">
+                    <form action="<%= request.getContextPath() %>/bookAppointment" method="post">
+                        <input type="hidden" name="doctorId" id="formDoctorId">
+                        <input type="hidden" name="departmentName" id="formDepartmentName">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="selectedDoctorDisplay">You are booking with:</label>
+                                <input type="text" id="selectedDoctorDisplay" readonly disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="selectedDepartmentDisplay">In Department:</label>
+                                <input type="text" id="selectedDepartmentDisplay" readonly disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="slot">Select Available Time Slot</label>
+                            <div id="slotContainer">
+                                <p>Loading slots...</p>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Your Full Name</label>
+                                <input type="text" name="fullName" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact">Your Contact Number</label>
+                                <input type="text" name="contact" id="contact" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Your Age</label>
+                                <input type="number" name="age" id="age" min="1" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Your Gender</label>
+                                <select name="gender" id="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                            <i class="fas fa-calendar-check"></i>
+                            Confirm & Book Appointment
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
-    <a href="patientAppointments.jsp" class="link-btn">
-        <i class="fas fa-history"></i>
-        View My Appointments
-    </a>
-    <p><a href="<%= request.getContextPath() %>/view/profile.jsp" class="profile-link">My Profile</a></p>
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+            <a href="patientAppointments.jsp" class="link-btn">
+                <i class="fas fa-history"></i>
+                View My Appointments
+            </a>
+            <a href="<%= request.getContextPath() %>/view/profile.jsp" class="link-btn">
+                <i class="fas fa-user"></i>
+                My Profile
+            </a>
+        </div>
+    </div>
 </div>
 
 <script>
-    // allDoctorsData is still needed for the form pre-fill and potentially other JS logic
     const allDoctorsData = [
     <%
         boolean firstDoctor = true;
@@ -565,7 +801,6 @@
         }
     %>
     ];
-    console.log("allDoctorsData (from JSP):", allDoctorsData);
 
     document.addEventListener("DOMContentLoaded", function() {
         const appointmentFlowContainer = document.getElementById("appointmentFlowContainer");
@@ -582,10 +817,26 @@
         const selectedDepartmentDisplay = document.getElementById("selectedDepartmentDisplay");
         const slotContainer = document.getElementById("slotContainer");
 
+        // Step indicators
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const step3 = document.getElementById("step3");
+
         let currentSelectedDepartment = null;
         let currentSelectedDoctor = null;
 
-        function showSection(sectionToShow) {
+        function updateSteps(activeStep) {
+            [step1, step2, step3].forEach((step, index) => {
+                step.classList.remove("active", "completed");
+                if (index + 1 < activeStep) {
+                    step.classList.add("completed");
+                } else if (index + 1 === activeStep) {
+                    step.classList.add("active");
+                }
+            });
+        }
+
+        function showSection(sectionToShow, stepNumber) {
             const sections = [departmentSelection, doctorSelection, appointmentFormSection];
             sections.forEach(section => {
                 if (section === sectionToShow) {
@@ -594,23 +845,21 @@
                     section.classList.remove("show");
                 }
             });
-            // Ensure the main flow container is always shown when in any step
+            updateSteps(stepNumber);
             appointmentFlowContainer.classList.add("show");
         }
 
-        // Attach event listeners to statically rendered department cards
+        // Department card event listeners
         document.querySelectorAll('#departmentSelection .card').forEach(card => {
             card.addEventListener('click', function() {
                 currentSelectedDepartment = this.dataset.department;
-                flowTitle.textContent = `Step 2: Select a Doctor in ${currentSelectedDepartment}`;
+                flowTitle.textContent = `Select a Doctor in ${currentSelectedDepartment}`;
                 flowInstructions.textContent = "Click on a doctor's card to proceed with booking an appointment with them.";
 
-                // Hide all doctor card grids first
                 document.querySelectorAll('#doctorSelection .card-grid').forEach(grid => {
                     grid.style.display = 'none';
                 });
 
-                // Find and show the relevant doctor card grid using data-attribute
                 let foundDoctors = false;
                 document.querySelectorAll('#doctorSelection .card-grid').forEach(grid => {
                     if (grid.dataset.departmentGroup === currentSelectedDepartment) {
@@ -619,65 +868,64 @@
                     }
                 });
 
-                // If no doctors found for department, display a message
                 const doctorSelectionContainer = document.querySelector('#doctorSelection');
                 const existingNoDoctorsMessage = doctorSelectionContainer.querySelector('.no-doctors-message');
                 if (existingNoDoctorsMessage) {
-                    existingNoDoctorsMessage.remove(); // Remove any previous message
+                    existingNoDoctorsMessage.remove();
                 }
+
                 if (!foundDoctors) {
                     const noDoctorsMessage = document.createElement('p');
-                    noDoctorsMessage.classList.add('no-doctors-message'); // Add a class to identify it
+                    noDoctorsMessage.classList.add('no-doctors-message');
                     noDoctorsMessage.style.textAlign = 'center';
                     noDoctorsMessage.style.color = 'var(--text-light)';
                     noDoctorsMessage.textContent = 'No doctors found in this department.';
                     doctorSelectionContainer.appendChild(noDoctorsMessage);
                 }
 
-                showSection(doctorSelection);
+                showSection(doctorSelection, 2);
             });
         });
 
-        // Attach event listeners to statically rendered doctor cards
+        // Doctor card event listeners
         document.querySelectorAll('#doctorSelection .card').forEach(card => {
             card.addEventListener('click', function() {
                 const doctorId = this.dataset.doctorId;
                 const doctorName = this.dataset.doctorName;
                 const departmentName = this.dataset.departmentName;
-
                 currentSelectedDoctor = { id: doctorId, name: doctorName, departmentName: departmentName };
                 showAppointmentForm(doctorId, doctorName, departmentName);
-                showSection(appointmentFormSection);
+                showSection(appointmentFormSection, 3);
             });
         });
 
         // Back buttons
         backToDepartmentsBtn.addEventListener("click", function() {
-            flowTitle.textContent = "Step 1: Choose a Department";
+            flowTitle.textContent = "Choose a Department";
             flowInstructions.textContent = "Click on a department card below to see the doctors available in that specialty.";
-            // Remove any "No doctors found" message when going back
             const existingNoDoctorsMessage = doctorSelection.querySelector('.no-doctors-message');
             if (existingNoDoctorsMessage) {
                 existingNoDoctorsMessage.remove();
             }
-            showSection(departmentSelection);
+            showSection(departmentSelection, 1);
         });
 
         backToDoctorsBtn.addEventListener("click", function() {
-            flowTitle.textContent = `Step 2: Select a Doctor in ${currentSelectedDepartment}`;
+            flowTitle.textContent = `Select a Doctor in ${currentSelectedDepartment}`;
             flowInstructions.textContent = "Click on a doctor's card to proceed with booking an appointment with them.";
-            showSection(doctorSelection);
+            showSection(doctorSelection, 2);
         });
 
         function showAppointmentForm(doctorId, doctorName, departmentName) {
-            flowTitle.textContent = "Step 3: Book Your Appointment";
+            flowTitle.textContent = "Book Your Appointment";
             flowInstructions.textContent = `Please fill in your details to finalize the booking for ${doctorName} in ${departmentName}.`;
+            
             formDoctorId.value = doctorId;
             formDepartmentName.value = departmentName;
             selectedDoctorDisplay.value = doctorName;
             selectedDepartmentDisplay.value = departmentName;
-
             slotContainer.innerHTML = "<p>Loading available time slots...</p>";
+
             fetch("<%=request.getContextPath()%>/getAvailableTimes?doctorId=" + doctorId)
                 .then(response => {
                     if (!response.ok) {
@@ -697,8 +945,8 @@
                 });
         }
 
-        // Initial state: show department selection
-        showSection(departmentSelection);
+        // Initial state
+        showSection(departmentSelection, 1);
     });
 </script>
 </body>
