@@ -257,7 +257,7 @@ public class AppointmentDAO {
                 appt.setId(rs.getInt("id"));
                 appt.setAppointmentDate(rs.getDate("appointment_date"));
                 appt.setAppointmentTime(rs.getTime("appointment_time"));
-                appt.setEndTime(rs.getTime("end_time")); // Include if you added end_time
+                appt.setEndTime(rs.getTime("end_time")); 
                 appt.setStatus(rs.getString("status"));
                 appt.setPatientName(rs.getString("patient_name"));
                 

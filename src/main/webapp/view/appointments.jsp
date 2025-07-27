@@ -601,6 +601,7 @@
                             <% } else if ("doctor".equalsIgnoreCase(user.getRole())) { %>
                                 <form action="<%= request.getContextPath() %>/updateAppointmentStatus" method="post" class="inline-form">
                                     <input type="hidden" name="appointmentId" value="<%= app.getId() %>">
+                                    
                                     <input type="hidden" name="status" value="Completed">
                                     <button type="submit" class="btn btn-primary btn-sm">Mark as Completed</button>
                                 </form>
