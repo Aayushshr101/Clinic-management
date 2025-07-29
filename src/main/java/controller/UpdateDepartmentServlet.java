@@ -1,6 +1,3 @@
-// ================================
-// 2. UpdateDepartmentServlet.java
-// ================================
 package controller;
 
 import dao.DepartmentDAO;

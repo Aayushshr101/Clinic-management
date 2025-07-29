@@ -17,7 +17,7 @@ public class AddDepartmentServlet extends HttpServlet {
         boolean added = dao.addDepartment(deptName);
 
         if (added) {
-            // ✅ Add success message to session
+            // Add success message to session
             HttpSession session = req.getSession();
             session.setAttribute("msg", "Department added successfully!");
             res.sendRedirect("view/adminDashboard.jsp");
