@@ -15,6 +15,8 @@
     List<Doctor> doctors = docDao.getAllDoctors();
     List<User> patients = userDao.getAllPatients();
 %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,28 +116,18 @@
                 </div>
             </div>
 
+
             <!-- Dashboard Content -->
             <div class="dashboard-content-area">
                 <%
-                    String msg = (String) session.getAttribute("msg");
-                    String errorMsg = (String) session.getAttribute("errorMsg");
-                    if (msg != null) {
-                %>
-                    <div class="message-box success">
-                        <%= msg %>
-                    </div>
-                <%
-                        session.removeAttribute("msg");
-                    }
-                    if (errorMsg != null) {
-                %>
-                    <div class="message-box error">
-                        <%= errorMsg %>
-                    </div>
-                <%
-                        session.removeAttribute("errorMsg");
-                    }
-                %>
+    String msg = (String) session.getAttribute("msg");
+    if (msg != null) {
+%>
+    <div class="message-box success"><%= msg %></div>
+<%
+        session.removeAttribute("msg");
+    }
+%>
 
                 <!-- Overview Section -->
                 <div id="overview" class="content-section active">
@@ -246,20 +238,63 @@
                 </div>
 
                 <!-- Departments Section -->
-                <div id="departments" class="content-section">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <h2>Add Department</h2>
-                        </div>
-                        <form action="<%= request.getContextPath() %>/addDepartment" method="post">
-                            <div class="form-group">
-                                <label for="departmentName">Department Name</label>
-                                <input type="text" id="departmentName" name="department" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Add Department</button>
-                        </form>
-                    </div>
-                </div>
+<div id="departments" class="content-section">
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h2>Add Department</h2>
+        </div>
+        <form action="<%= request.getContextPath() %>/addDepartment" method="post">
+            <div class="form-group">
+                <label for="departmentName">Department Name</label>
+                <input type="text" id="departmentName" name="department" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Department</button>
+        </form>
+    </div>
+
+    <div class="dashboard-card" style="margin-top: 40px;">
+        <div class="card-header">
+            <h2>All Departments</h2>
+        </div>
+
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Department Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (departments != null && !departments.isEmpty()) {
+                    int i = 1;
+                    for (Department d : departments) { %>
+                        <tr>
+                            <td><%= i++ %></td>
+                            <td><%= d.getName() %></td>
+                            <td>
+                                <form action="<%= request.getContextPath() %>/updateDepartment" method="post" style="display: inline;">
+                                    <input type="hidden" name="id" value="<%= d.getId() %>">
+                                    <input type="text" name="name" value="<%= d.getName() %>" required>
+                                    <button type="submit" class="btn btn-secondary">Edit</button>
+                                </form>
+                                <form action="<%= request.getContextPath() %>/deleteDepartment" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this department?');">
+                                    <input type="hidden" name="id" value="<%= d.getId() %>">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                <%  } 
+                } else { %>
+                    <tr>
+                        <td colspan="3">No departments found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
                 <!-- Add Doctor Section -->
                 <div id="add-doctor" class="content-section">
@@ -1439,6 +1474,21 @@ table a.btn-danger:hover {
     right: 10px;
   }
 }
+
+.message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: fit-content;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
         
     </style>
 </body>

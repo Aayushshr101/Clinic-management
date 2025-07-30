@@ -297,6 +297,30 @@
                 height: 200px;
             }
         }
+        .message-box.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+}
+
 
         @media (max-width: 480px) {
             body.login-page {
@@ -346,9 +370,18 @@
         <div class="login-form-section">
             <div class="login-form-background-pattern"></div>
             <div class="login-form-content">
-               
-                <h2>Patient Registration</h2>
+    <h2>Patient Registration</h2>
+    <%
+        String msg = (String) request.getAttribute("msg");
+        if (msg != null) {
+    %>
+        <div class="message-box info"><%= msg %></div>
+    <%
+        }
+    %>
+
                 <form action="<%= request.getContextPath() %>/register" method="post">
+                
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" required>

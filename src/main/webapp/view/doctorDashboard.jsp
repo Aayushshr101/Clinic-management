@@ -15,6 +15,9 @@
     int todayCount = apptDao.getTodayAppointmentCount(doctorId);
     String departmentName = doctorDao.getDoctorDepartmentName(doctorId);
 %>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,15 +39,15 @@
           font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
           color: #333;
-          background-color: #f0f2f5; /* Light background for the entire page */
-          overflow-x: hidden; /* Prevent horizontal scroll */
+          background-color: #f0f2f5; 
+          overflow-x: hidden; 
         }
 
         /* Dashboard Layout */
         .dashboard-wrapper {
           display: flex;
           min-height: 100vh;
-          background-color: #f0f2f5; /* Background for the main content area */
+          background-color: #f0f2f5; 
         }
 
         /* Sidebar */
@@ -58,8 +61,8 @@
           position: sticky; /* Make sidebar sticky */
           top: 0;
           height: 100vh; /* Full height */
-          overflow-y: auto; /* Enable scrolling for long sidebars */
-          z-index: 1000; /* Ensure it's above other content */
+          overflow-y: auto; 
+          z-index: 1000; 
         }
 
         .sidebar.collapsed {
@@ -287,6 +290,19 @@
         .logout-link-top:hover {
           color: #4a90e2;
         }
+.message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: fit-content;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
 
         /* Dashboard Content Area */
         .dashboard-content-area {
@@ -923,6 +939,7 @@
     </style>
 </head>
 <body>
+
     <div class="dashboard-wrapper">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -933,6 +950,8 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
+            
+            
             
             <nav class="sidebar-nav">
                 <div class="sidebar-group">
@@ -1003,7 +1022,15 @@
                     </div>
                 </div>
             </div>
-
+<%
+    String msg = (String) session.getAttribute("msg");
+    if (msg != null) {
+%>
+    <div class="message-box success"><%= msg %></div>
+<%
+        session.removeAttribute("msg");
+    }
+%>
             <!-- Dashboard Content -->
             <div class="dashboard-content-area">
                 <!-- Overview Section -->

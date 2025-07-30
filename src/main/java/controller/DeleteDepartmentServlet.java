@@ -1,21 +1,32 @@
 package controller;
 
 import dao.DepartmentDAO;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/deleteDepartment")
 public class DeleteDepartmentServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        DepartmentDAO dao = new DepartmentDAO();
-        boolean deleted = dao.deleteDepartment(id);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        HttpSession session = req.getSession();
-        if (deleted) session.setAttribute("msg", "Department deleted.");
-        else session.setAttribute("msg", "Failed to delete department.");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
 
-        res.sendRedirect("view/adminDashboard.jsp");
+            DepartmentDAO dao = new DepartmentDAO();
+            dao.deleteDepartment(id);
+
+            
+            request.getSession().setAttribute("msg", "Department deleted successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("msg", "Error deleting department.");
+        }
+
+        response.sendRedirect("view/adminDashboard.jsp"); // Redirect to your admin page
     }
 }
+

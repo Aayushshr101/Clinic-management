@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 
 @WebServlet("/login")
-
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String email = req.getParameter("email");
@@ -24,6 +23,7 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
+            session.setAttribute("msg", "Login successful!");
 
             switch (user.getRole()) {
                 case "admin":
@@ -41,7 +41,6 @@ public class LoginServlet extends HttpServlet {
         } else {
             req.setAttribute("msg", "Invalid credentials");
             req.getRequestDispatcher("/view/login.jsp").forward(req, res);
-
         }
     }
 }

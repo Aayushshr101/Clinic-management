@@ -8,9 +8,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
-@WebServlet("/register")
 
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String name = req.getParameter("name");
@@ -26,11 +27,12 @@ public class RegisterServlet extends HttpServlet {
         boolean success = dao.register(user);
 
         if (success) {
+            HttpSession session = req.getSession();
+            session.setAttribute("msg", "Registration successful! Please login.");
             res.sendRedirect("view/login.jsp");
         } else {
             req.setAttribute("msg", "Registration failed or email already exists.");
             req.getRequestDispatcher("view/register.jsp").forward(req, res);
-
         }
     }
 }

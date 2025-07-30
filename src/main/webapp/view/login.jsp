@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediTrackPro Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+    
     <style>
         /* Global box-sizing reset */
         * {
@@ -330,6 +332,31 @@
                 font-size: 1.8rem;
             }
         }
+        
+       .message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.message-box.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+}
+  
     </style>
 </head>
 <body class="login-page">
@@ -345,20 +372,22 @@
             <div class="login-form-content">
                 
                 <h2>Login to MediHub</h2>
-                <%
-                    String msg = (String) session.getAttribute("msg");
-                    if (msg != null) {
-                %>
-                    <div class="message-box success">
-                        <%= msg %>
-                    </div>
-                <%
-                        session.removeAttribute("msg");
-                    }
-                %>
-                <% if ("true".equals(request.getParameter("logout"))) { %>
-                    <div class="message-box info">You have been logged out successfully.</div>
-                <% } %>
+              <%
+    String sessionMsg = (String) session.getAttribute("msg");
+    if (sessionMsg != null) {
+%>
+    <div class="message-box success"><%= sessionMsg %></div>
+<%
+        session.removeAttribute("msg");
+    }
+
+    String requestMsg = (String) request.getAttribute("msg");
+    if (requestMsg != null) {
+%>
+    <div class="message-box error"><%= requestMsg %></div>
+<% } %>
+
+
                 <form action="<%= request.getContextPath() %>/login" method="post">
                     <div class="form-group">
                         <label for="email">Email id</label>

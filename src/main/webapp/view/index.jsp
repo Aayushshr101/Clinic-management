@@ -12,6 +12,7 @@
     List<Department> departments = deptDao.getAllDepartments();
 %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,7 +95,19 @@
             color: #6c757d;
             font-weight: 500;
         }
-
+ .message {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         /* Navigation */
         nav {
             display: flex;
@@ -370,6 +383,21 @@
             color: #212529;
             font-weight: 600;
         }
+        
+        .message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: fit-content;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+        
 
         /* Services Section */
         .services-section {
@@ -684,6 +712,8 @@
                 font-size: 1rem;
             }
         }
+        
+        
 
         /* Animations */
         @keyframes fadeInUp {
@@ -732,7 +762,20 @@
         }
     </style>
 </head>
+
 <body>
+<%
+        String msg = (String) session.getAttribute("msg");
+        if (msg != null) {
+    %>
+        <div class="message">
+            <i class="fas fa-check-circle"></i>
+            <%= msg %>
+        </div>
+    <%
+            session.removeAttribute("msg");
+        }
+    %>
     <!-- Header -->
     <header id="header">
         <div class="container">
@@ -777,11 +820,21 @@
             </div>
         </div>
     </header>
+    
+    
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+    
+    
         <div class="container">
+                  
+    
+         
             <div class="hero-content">
+            
+            
+      
                 <h1>Your Health, Simplfied</h1>
                 <p>Experience seamless healthcare with our advanced clinic management system. Book appointments, manage health records, and connect with medical professionals.</p>
                 
@@ -915,6 +968,8 @@
                 </div>
                 
             </div>
+            
+            
 
             <!-- Right Column: Contact Form -->
             <div class="contact-form-col">

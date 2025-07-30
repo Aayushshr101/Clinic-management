@@ -25,7 +25,7 @@ public class BookAppointmentServlet extends HttpServlet {
 
         try {
             int doctorId = Integer.parseInt(req.getParameter("doctorId"));
-            String slot = req.getParameter("slot");  // ✅ FIXED: this must match radio input name
+            String slot = req.getParameter("slot");  // 
 
             if (slot == null || !slot.contains("|")) {
                 session.setAttribute("msg", "Invalid time slot selected.");

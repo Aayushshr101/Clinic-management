@@ -32,6 +32,8 @@
     DoctorDAO doctorDAO = new DoctorDAO();
     List<Doctor> doctors = doctorDAO.getAllDoctors();
 %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
