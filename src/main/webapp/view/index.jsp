@@ -765,17 +765,30 @@
 
 <body>
 <%
-        String msg = (String) session.getAttribute("msg");
-        if (msg != null) {
-    %>
-        <div class="message">
-            <i class="fas fa-check-circle"></i>
-            <%= msg %>
-        </div>
-    <%
-            session.removeAttribute("msg");
-        }
-    %>
+    String msg = (String) session.getAttribute("msg");
+    if (msg != null) {
+%>
+    <div class="message">
+        <i class="fas fa-check-circle"></i>
+        <%= msg %>
+    </div>
+<%
+        session.removeAttribute("msg");
+    }
+%>
+<%
+    String logoutMsg = request.getParameter("logout");
+    if ("success".equals(logoutMsg)) {
+%>
+    <div style="background-color: #d4edda; color: #155724; padding: 12px; margin: 15px; border-radius: 5px; text-align: center; font-weight: bold;">
+        You have been logged out successfully. <a href="<%= request.getContextPath() %>/view/index.jsp" style="color: #155724; text-decoration: underline;"></a>
+    </div>
+<%
+    }
+%>
+
+
+
     <!-- Header -->
     <header id="header">
         <div class="container">

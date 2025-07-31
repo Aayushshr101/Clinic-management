@@ -13,7 +13,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect(request.getContextPath() + "/view/index.jsp");
+        // Redirect with message
+        response.sendRedirect(request.getContextPath() + "/view/index.jsp?logout=success");
     }
 }
-
